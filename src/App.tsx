@@ -46,15 +46,15 @@ function App() {
       }, 500);
       
     } catch (err) {
-      setDescriptions(prev => 
-        prev.map(desc => 
-          desc.id === newDescription.id 
+      const errorMessage = err instanceof Error ? err.message : 'Erreur inconnue';
+      setDescriptions(prev =>
+        prev.map(desc =>
+          desc.id === newDescription.id
             ? { ...desc, description: 'Erreur lors de l\'analyse de l\'image.', isLoading: false }
             : desc
         )
       );
-      
-      speak('Une erreur est survenue lors de l\'analyse de l\'image.');
+      speak(`Une erreur est survenue lors de l'analyse de l'image: ${errorMessage}`);
     }
   }, [describeImage, speak]);
 
@@ -62,7 +62,7 @@ function App() {
     speak('Ceci est un test de la synthèse vocale. Bonjour et bienvenue dans l\'application de description d\'images accessible.');
   }, [speak]);
 
-  const handleKeyboardNavigation = useCallback((event: React.KeyboardEvent) => {
+  const handleKeyboardNavigation = useCallback((event: KeyboardEvent) => {
     if (event.ctrlKey || event.metaKey) {
       switch (event.key) {
         case 'h':
@@ -85,8 +85,8 @@ function App() {
   }, [showHistory, showSettings, isSpeaking, speak, stop]);
 
   React.useEffect(() => {
-    document.addEventListener('keydown', handleKeyboardNavigation as any);
-    return () => document.removeEventListener('keydown', handleKeyboardNavigation as any);
+    document.addEventListener('keydown', handleKeyboardNavigation);
+    return () => document.removeEventListener('keydown', handleKeyboardNavigation);
   }, [handleKeyboardNavigation]);
 
   // Announce the app when it loads
