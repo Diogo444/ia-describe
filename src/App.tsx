@@ -1,21 +1,19 @@
 import React, { useState, useCallback } from 'react';
-import { Eye, History, Settings as SettingsIcon, Sun, Moon } from 'lucide-react';
+import { Eye, History, Sun, Moon } from 'lucide-react';
 import { FileUpload } from './components/FileUpload';
 import { DescriptionCard } from './components/DescriptionCard';
-import { SettingsPanel } from './components/SettingsPanel';
-import { useSpeech } from './hooks/useSpeech';
+import { useGeminiSpeech } from './hooks/useGeminiSpeech';
 import { useGemini } from './hooks/useGemini';
 import { ImageDescription } from './types';
 import { useTheme } from './hooks/useTheme';
 
 function App() {
   const [descriptions, setDescriptions] = useState<ImageDescription[]>([]);
-  const [showSettings, setShowSettings] = useState(false);
   const [showHistory, setShowHistory] = useState(false);
 
   const { theme, toggleTheme } = useTheme();
   
-  const { speak, stop, isSpeaking, isSupported, voices, settings, setSettings } = useSpeech();
+  const { speak, stop, isSpeaking } = useGeminiSpeech();
   const { describeImage, isLoading, error } = useGemini();
 
   const handleFileSelect = useCallback(async (file: File) => {
@@ -73,11 +71,6 @@ function App() {
           setShowHistory(!showHistory);
           speak(showHistory ? 'Historique masqué' : 'Historique affiché');
           break;
-        case 's':
-          event.preventDefault();
-          setShowSettings(!showSettings);
-          speak(showSettings ? 'Paramètres masqués' : 'Paramètres affichés');
-          break;
         case 'Escape':
           if (isSpeaking) {
             stop();
@@ -85,7 +78,7 @@ function App() {
           break;
       }
     }
-  }, [showHistory, showSettings, isSpeaking, speak, stop]);
+  }, [showHistory, isSpeaking, speak, stop]);
 
   React.useEffect(() => {
     document.addEventListener('keydown', handleKeyboardNavigation);
@@ -138,14 +131,6 @@ function App() {
                 <History className="w-6 h-6 text-gray-600" aria-hidden="true" />
               </button>
 
-              <button
-                onClick={() => setShowSettings(!showSettings)}
-                className="p-3 bg-gray-100 hover:bg-gray-200 rounded-lg focus:ring-4 focus:ring-blue-500 focus:ring-opacity-25"
-                aria-label="Ouvrir les paramètres (Ctrl+S)"
-                title="Paramètres (Ctrl+S)"
-              >
-                <SettingsIcon className="w-6 h-6 text-gray-600" aria-hidden="true" />
-              </button>
 
               <button
                 onClick={toggleTheme}
@@ -182,30 +167,6 @@ function App() {
             </div>
           )}
 
-          {/* Settings panel */}
-          {showSettings && isSupported && (
-            <section aria-labelledby="settings-heading">
-              <h2 id="settings-heading" className="sr-only">Paramètres de synthèse vocale</h2>
-              <SettingsPanel
-                isOpen={showSettings}
-                onToggle={() => setShowSettings(!showSettings)}
-                settings={settings}
-                onSettingsChange={setSettings}
-                voices={voices}
-                onTestSpeech={handleTestSpeech}
-              />
-            </section>
-          )}
-
-          {/* Speech not supported warning */}
-          {!isSupported && (
-            <div className="bg-yellow-50 border-2 border-yellow-200 rounded-lg p-4" role="alert">
-              <p className="text-yellow-800">
-                La synthèse vocale n'est pas disponible dans votre navigateur. 
-                Les descriptions seront affichées uniquement en texte.
-              </p>
-            </div>
-          )}
 
           {/* Descriptions section */}
           {descriptions.length > 0 && (
@@ -243,7 +204,7 @@ function App() {
             <div className="space-y-2 text-blue-800">
               <p>• <strong>Sélectionner une image :</strong> Cliquez sur la zone de dépôt ou glissez-déposez une image</p>
               <p>• <strong>Navigation clavier :</strong> Utilisez Tab pour naviguer, Entrée/Espace pour activer</p>
-              <p>• <strong>Raccourcis :</strong> Ctrl+H (historique), Ctrl+S (paramètres), Échap (arrêter la lecture)</p>
+              <p>• <strong>Raccourcis :</strong> Ctrl+H (historique), Échap (arrêter la lecture)</p>
               <p>• <strong>Formats supportés :</strong> JPEG, PNG, GIF, WebP (maximum 10MB)</p>
               <p>• <strong>Synthèse vocale :</strong> Les descriptions sont lues automatiquement</p>
             </div>
