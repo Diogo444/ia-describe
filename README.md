@@ -4,8 +4,8 @@
 
 ## Prérequis
 
-- **Node.js** version 18 ou plus. Si vous ne l'avez pas, téléchargez l'installateur sur [nodejs.org](https://nodejs.org/).
 - Une clé d'API Gemini. Vous pouvez en générer une depuis le [site Google AI Studio](https://aistudio.google.com/app/apikey) après connexion avec votre compte Google.
+- **Node.js** version 18 ou plus est nécessaire uniquement si vous installez l'application sans Docker.
 
 ## Installation pas à pas
 
@@ -44,6 +44,18 @@ Les fichiers seront placés dans le dossier `dist`. Vous pouvez les prévisualis
 ```bash
 npm run preview
 ```
+
+## Utilisation avec Docker
+
+Si vous préférez lancer l'application sans installer Node.js, vous pouvez utiliser Docker :
+
+1. Copiez d'abord le fichier `.env.example` en `.env` et renseignez votre clé d'API.
+2. Assurez-vous d'avoir Docker et Docker Compose installés.
+3. Lancez ensuite :
+   ```bash
+   docker compose up --build
+   ```
+   L'application sera accessible sur [http://localhost:4173](http://localhost:4173).
 
 ## Ressources utiles
 
