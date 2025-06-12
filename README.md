@@ -32,6 +32,7 @@
 - Patientez pendant l'analyse. La description apparaîtra sous forme de texte et sera lue automatiquement si la synthèse vocale de votre navigateur est disponible.
 - `Ctrl+H` affiche ou masque l'historique des descriptions. `Ctrl+S` ouvre les paramètres de voix. Appuyez sur `Échap` pour interrompre la lecture.
 - Dans le panneau "Paramètres", vous pouvez choisir la voix, la vitesse et le volume de la lecture.
+- Vous pouvez également sélectionner le niveau de détail souhaité pour la description : rapide, moyenne ou détaillée.
 
 ## Construire une version de production
 

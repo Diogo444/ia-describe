@@ -5,13 +5,14 @@ import { DescriptionCard } from './components/DescriptionCard';
 import { SettingsPanel } from './components/SettingsPanel';
 import { useSpeech } from './hooks/useSpeech';
 import { useGemini } from './hooks/useGemini';
-import { ImageDescription } from './types';
+import { ImageDescription, DetailLevel } from './types';
 import { useTheme } from './hooks/useTheme';
 
 function App() {
   const [descriptions, setDescriptions] = useState<ImageDescription[]>([]);
   const [showSettings, setShowSettings] = useState(false);
   const [showHistory, setShowHistory] = useState(false);
+  const [detailLevel, setDetailLevel] = useState<DetailLevel>('moyenne');
 
   const { theme, toggleTheme } = useTheme();
   
@@ -33,7 +34,7 @@ function App() {
     speak(`Analyse de l'image ${file.name} en cours. Veuillez patienter.`);
 
     try {
-      const description = await describeImage(file);
+      const description = await describeImage(file, detailLevel);
       
       setDescriptions(prev => 
         prev.map(desc => 
@@ -59,7 +60,7 @@ function App() {
       );
       speak(`Une erreur est survenue lors de l'analyse de l'image: ${errorMessage}`);
     }
-  }, [describeImage, speak]);
+  }, [describeImage, speak, detailLevel]);
 
   const handleTestSpeech = useCallback(() => {
     speak('Ceci est un test de la synthèse vocale. Bonjour et bienvenue dans l\'application de description d\'images accessible.');
@@ -192,6 +193,8 @@ function App() {
                 settings={settings}
                 onSettingsChange={setSettings}
                 voices={voices}
+                detailLevel={detailLevel}
+                onDetailLevelChange={setDetailLevel}
                 onTestSpeech={handleTestSpeech}
               />
             </section>
