@@ -29,9 +29,8 @@
 ## Utilisation de l'application
 
 - Cliquez sur "Sélectionner une image" ou glissez simplement une image (JPEG, PNG, GIF ou WebP de moins de 10 Mo) dans la zone prévue.
-- Patientez pendant l'analyse. La description apparaîtra sous forme de texte et sera lue automatiquement si la synthèse vocale de votre navigateur est disponible.
-- `Ctrl+H` affiche ou masque l'historique des descriptions. `Ctrl+S` ouvre les paramètres de voix. Appuyez sur `Échap` pour interrompre la lecture.
-- Dans le panneau "Paramètres", vous pouvez choisir la voix, la vitesse et le volume de la lecture.
+- Patientez pendant l'analyse. La description apparaîtra sous forme de texte et sera lue automatiquement grâce à l'API Gemini.
+- `Ctrl+H` affiche ou masque l'historique des descriptions. Appuyez sur `Échap` pour interrompre la lecture.
 
 ## Construire une version de production
 
