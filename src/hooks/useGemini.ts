@@ -29,8 +29,8 @@ export const useGemini = () => {
       const genAI = new GoogleGenerativeAI(apiKey);
       const model = genAI.getGenerativeModel({
         // Gemini 1.0 Pro Vision est obsolète ;
-        // on utilise à présent le modèle Gemini 2.5 Flash
-        model: 'gemini-2.5-flash',
+        // on utilise à présent le modèle Gemini 2.0 Flash
+        model: 'gemini-2.0-flash',
         generationConfig: { maxOutputTokens: 1000 }
       });
 
