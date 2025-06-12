@@ -1,4 +1,5 @@
 import { useState, useCallback } from 'react';
+import { GoogleGenerativeAI } from '@google/generative-ai';
 
 export const useGemini = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -9,12 +10,10 @@ export const useGemini = () => {
     setError(null);
 
     try {
-      // Convert file to base64
       const base64 = await new Promise<string>((resolve, reject) => {
         const reader = new FileReader();
         reader.onload = () => {
           const result = reader.result as string;
-          // Remove data URL prefix
           const base64Data = result.split(',')[1];
           resolve(base64Data);
         };
@@ -22,31 +21,39 @@ export const useGemini = () => {
         reader.readAsDataURL(file);
       });
 
-      // Note: In a real implementation, you would need to:
-      // 1. Set up environment variables for Gemini API key
-      // 2. Use a backend service to make the API call for security
-      // For this demo, we'll simulate the API response
-      
-      // Simulate API delay
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      const apiKey = import.meta.env.VITE_GEMINI_API_KEY as string | undefined;
+      if (!apiKey) {
+        throw new Error('Clé API Gemini manquante');
+      }
 
-      // Mock response based on common image types
-      const mockDescriptions = [
-        "Cette image montre une scène extérieure avec un ciel bleu dégagé. On peut voir des arbres verdoyants au premier plan et des bâtiments en arrière-plan. La lumière naturelle suggère que la photo a été prise en milieu de journée.",
-        "L'image présente un portrait d'une personne souriante. La personne porte des vêtements décontractés et se trouve dans un environnement intérieur bien éclairé. L'arrière-plan semble être flou, mettant l'accent sur le sujet principal.",
-        "Cette photographie capture un paysage naturel avec des montagnes au loin. Au premier plan, on observe de la végétation et ce qui semble être un sentier. Les couleurs dominantes sont le vert de la nature et le bleu du ciel.",
-        "L'image montre un objet ou un produit sur un fond neutre. L'éclairage est uniforme, suggérant qu'il s'agit d'une photo de produit ou d'une image destinée à un usage commercial.",
-        "Cette image contient du texte ou des éléments graphiques. Il pourrait s'agir d'un document, d'une affiche ou d'une capture d'écran avec des informations textuelles visibles."
-      ];
+      const genAI = new GoogleGenerativeAI(apiKey);
+      const model = genAI.getGenerativeModel({
+        model: 'gemini-pro-vision',
+        generationConfig: { maxOutputTokens: 1000 }
+      });
 
-      const randomDescription = mockDescriptions[Math.floor(Math.random() * mockDescriptions.length)];
-      
-      return `Description détaillée : ${randomDescription} L'image a une taille approximative de ${Math.round(file.size / 1024)} KB et est au format ${file.type.split('/')[1]}.`;
+      const prompt =
+        "Décris précisément cette image pour une personne malvoyante ou non voyante.";
 
+      const result = await model.generateContent([
+        prompt,
+        {
+          inlineData: {
+            mimeType: file.type,
+            data: base64
+          }
+        }
+      ]);
+
+      const text = result.response.candidates
+        .map(c => c.content.parts.map(p => p.text).join(''))
+        .join('');
+
+      return text;
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Erreur inconnue';
       setError(`Erreur lors de l'analyse de l'image : ${errorMessage}`);
-      throw new Error(errorMessage);
+      throw err;
     } finally {
       setIsLoading(false);
     }
