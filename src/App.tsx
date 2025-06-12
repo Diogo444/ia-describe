@@ -1,16 +1,19 @@
 import React, { useState, useCallback } from 'react';
-import { Eye, History, Settings as SettingsIcon } from 'lucide-react';
+import { Eye, History, Settings as SettingsIcon, Sun, Moon } from 'lucide-react';
 import { FileUpload } from './components/FileUpload';
 import { DescriptionCard } from './components/DescriptionCard';
 import { SettingsPanel } from './components/SettingsPanel';
 import { useSpeech } from './hooks/useSpeech';
 import { useGemini } from './hooks/useGemini';
 import { ImageDescription } from './types';
+import { useTheme } from './hooks/useTheme';
 
 function App() {
   const [descriptions, setDescriptions] = useState<ImageDescription[]>([]);
   const [showSettings, setShowSettings] = useState(false);
   const [showHistory, setShowHistory] = useState(false);
+
+  const { theme, toggleTheme } = useTheme();
   
   const { speak, stop, isSpeaking, isSupported, voices, settings, setSettings } = useSpeech();
   const { describeImage, isLoading, error } = useGemini();
@@ -98,7 +101,7 @@ function App() {
   }, [speak]);
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
       {/* Skip to main content link */}
       <a 
         href="#main-content"
@@ -108,7 +111,7 @@ function App() {
       </a>
 
       {/* Header */}
-      <header className="bg-white shadow-sm border-b-2 border-blue-500">
+      <header className="bg-white dark:bg-gray-800 shadow-sm border-b-2 border-blue-500 dark:border-blue-700">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3">
@@ -134,7 +137,7 @@ function App() {
               >
                 <History className="w-6 h-6 text-gray-600" aria-hidden="true" />
               </button>
-              
+
               <button
                 onClick={() => setShowSettings(!showSettings)}
                 className="p-3 bg-gray-100 hover:bg-gray-200 rounded-lg focus:ring-4 focus:ring-blue-500 focus:ring-opacity-25"
@@ -142,6 +145,19 @@ function App() {
                 title="Paramètres (Ctrl+S)"
               >
                 <SettingsIcon className="w-6 h-6 text-gray-600" aria-hidden="true" />
+              </button>
+
+              <button
+                onClick={toggleTheme}
+                className="p-3 bg-gray-100 hover:bg-gray-200 rounded-lg focus:ring-4 focus:ring-blue-500 focus:ring-opacity-25"
+                aria-label={theme === 'dark' ? 'Passer en mode clair' : 'Passer en mode sombre'}
+                title={theme === 'dark' ? 'Mode clair' : 'Mode sombre'}
+              >
+                {theme === 'dark' ? (
+                  <Sun className="w-6 h-6 text-gray-600" aria-hidden="true" />
+                ) : (
+                  <Moon className="w-6 h-6 text-gray-600" aria-hidden="true" />
+                )}
               </button>
             </div>
           </div>
@@ -236,7 +252,7 @@ function App() {
       </main>
 
       {/* Footer */}
-      <footer className="bg-white border-t-2 border-gray-200 mt-16">
+      <footer className="bg-white dark:bg-gray-800 border-t-2 border-gray-200 dark:border-gray-700 mt-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <p className="text-center text-gray-600">
             Application conçue pour l'accessibilité - Compatible avec les lecteurs d'écran

@@ -6,6 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Description d'Images Accessible - Gemini AI</title>
     <meta name="description" content="Application accessible pour décrire des images à l'aide de l'intelligence artificielle Gemini, conçue pour les personnes malvoyantes et non voyantes.">
+    <script>
+      const storedTheme = localStorage.getItem('theme');
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      if (storedTheme === 'dark' || (!storedTheme && prefersDark)) {
+        document.documentElement.classList.add('dark');
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>
