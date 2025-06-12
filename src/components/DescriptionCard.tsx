@@ -31,7 +31,7 @@ export const DescriptionCard: React.FC<DescriptionCardProps> = ({
   };
 
   return (
-    <div className="bg-white border-2 border-gray-200 rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow">
+    <div className="bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow">
       <div className="flex items-start justify-between mb-4">
         <div className="flex items-center space-x-3">
           <div className="p-2 bg-blue-100 rounded-lg">
@@ -72,7 +72,7 @@ export const DescriptionCard: React.FC<DescriptionCardProps> = ({
       </div>
 
       <div className="prose prose-lg max-w-none">
-        <p className="text-gray-800 leading-relaxed whitespace-pre-wrap">
+        <p className="text-gray-800 dark:text-gray-200 leading-relaxed whitespace-pre-wrap">
           {description.description}
         </p>
       </div>

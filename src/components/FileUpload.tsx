@@ -67,9 +67,9 @@ export const FileUpload: React.FC<FileUploadProps> = ({ onFileSelect, isLoading 
       <div
         className={`
           relative border-4 border-dashed rounded-xl p-12 text-center transition-all duration-200
-          ${isDragOver 
-            ? 'border-blue-500 bg-blue-50' 
-            : 'border-gray-300 hover:border-gray-400'
+          ${isDragOver
+            ? 'border-blue-500 bg-blue-50 dark:bg-gray-700'
+            : 'border-gray-300 hover:border-gray-400 dark:border-gray-600'
           }
           ${isLoading ? 'opacity-50 pointer-events-none' : 'cursor-pointer'}
           focus-within:ring-4 focus-within:ring-blue-500 focus-within:ring-opacity-25
@@ -101,16 +101,16 @@ export const FileUpload: React.FC<FileUploadProps> = ({ onFileSelect, isLoading 
           </div>
           
           <div className="space-y-2">
-            <h3 className="text-2xl font-bold text-gray-900">
+            <h3 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
               {isLoading ? 'Analyse en cours...' : 'Sélectionnez une image'}
             </h3>
-            <p id="file-upload-description" className="text-lg text-gray-600">
+            <p id="file-upload-description" className="text-lg text-gray-600 dark:text-gray-300">
               {isLoading 
                 ? 'Veuillez patienter pendant que l\'IA analyse votre image'
                 : 'Glissez-déposez une image ici ou cliquez pour sélectionner'
               }
             </p>
-            <p className="text-sm text-gray-500">
+            <p className="text-sm text-gray-500 dark:text-gray-400">
               Formats supportés : JPEG, PNG, GIF, WebP (max 10MB)
             </p>
           </div>
@@ -118,10 +118,10 @@ export const FileUpload: React.FC<FileUploadProps> = ({ onFileSelect, isLoading 
       </div>
 
       {error && (
-        <div className="mt-4 p-4 bg-red-50 border border-red-200 rounded-lg" role="alert">
+        <div className="mt-4 p-4 bg-red-50 dark:bg-red-950 border border-red-200 dark:border-red-700 rounded-lg" role="alert">
           <div className="flex items-center space-x-2">
             <AlertCircle className="w-5 h-5 text-red-600" aria-hidden="true" />
-            <p className="text-red-800 font-medium">{error}</p>
+            <p className="text-red-800 dark:text-red-300 font-medium">{error}</p>
           </div>
         </div>
       )}
