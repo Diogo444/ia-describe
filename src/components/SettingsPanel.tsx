@@ -1,6 +1,6 @@
 import React from 'react';
 import { Settings, Volume2 } from 'lucide-react';
-import { SpeechSettings } from '../types';
+import { SpeechSettings, DetailLevel } from '../types';
 
 interface SettingsPanelProps {
   isOpen: boolean;
@@ -8,6 +8,8 @@ interface SettingsPanelProps {
   settings: SpeechSettings;
   onSettingsChange: (settings: SpeechSettings) => void;
   voices: SpeechSynthesisVoice[];
+  detailLevel: DetailLevel;
+  onDetailLevelChange: (level: DetailLevel) => void;
   onTestSpeech: () => void;
 }
 
@@ -17,6 +19,8 @@ export const SettingsPanel: React.FC<SettingsPanelProps> = ({
   settings,
   onSettingsChange,
   voices,
+  detailLevel,
+  onDetailLevelChange,
   onTestSpeech
 }) => {
   return (
@@ -29,7 +33,7 @@ export const SettingsPanel: React.FC<SettingsPanelProps> = ({
       >
         <div className="flex items-center space-x-3">
           <Settings className="w-6 h-6 text-gray-600" aria-hidden="true" />
-          <span className="text-lg font-semibold text-gray-900 dark:text-gray-100">Paramètres de synthèse vocale</span>
+          <span className="text-lg font-semibold text-gray-900 dark:text-gray-100">Paramètres</span>
         </div>
         <div className={`transform transition-transform ${isOpen ? 'rotate-180' : ''}`}>
           ▼
@@ -103,6 +107,22 @@ export const SettingsPanel: React.FC<SettingsPanelProps> = ({
               onChange={(e) => onSettingsChange({ ...settings, volume: parseFloat(e.target.value) })}
               className="w-full h-3 bg-gray-200 dark:bg-gray-700 rounded-lg appearance-none cursor-pointer focus:ring-4 focus:ring-blue-500 focus:ring-opacity-25"
             />
+          </div>
+
+          <div>
+            <label htmlFor="detail-select" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              Niveau de détail
+            </label>
+            <select
+              id="detail-select"
+              value={detailLevel}
+              onChange={(e) => onDetailLevelChange(e.target.value as DetailLevel)}
+              className="w-full p-3 border-2 border-gray-300 dark:border-gray-600 rounded-lg focus:ring-4 focus:ring-blue-500 focus:ring-opacity-25 focus:border-blue-500"
+            >
+              <option value="rapide">Rapide</option>
+              <option value="moyenne">Moyenne</option>
+              <option value="detaillee">Détaillée</option>
+            </select>
           </div>
 
           <button

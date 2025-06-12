@@ -12,3 +12,5 @@ export interface SpeechSettings {
   volume: number;
   voice: string;
 }
+
+export type DetailLevel = 'rapide' | 'moyenne' | 'detaillee';
